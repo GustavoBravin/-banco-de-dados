@@ -1,25 +1,14 @@
-const{MongoClient} = require('mongodb')
-const endereço = "mongodb://localhost:27017";
-const cliente = new MongoClient(endereço);
+const express = require('express');
+const cors = require('cors');
+const score = require('./score.js');
 
-async function main() {
+const PORT = process.env.PORT || 5050;
+const app = express();
 
-    try{
-    const db = cliente.db('teste')
-    const coleçao = db.collection('teste')
-    console.log(await coleçao.findOne());
- }
- finally{
- await cliente.close();
-}
+app.use(cors());
+app.use(express.json());
+app.use("/score", score);
 
-}
-main().catch(console.dir);
-
-
-
-
-
-
-
-
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta: ${PORT}`);
+});
